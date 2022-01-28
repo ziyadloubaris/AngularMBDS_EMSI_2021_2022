@@ -102,27 +102,36 @@ export class AssignmentsComponent implements OnInit {
     this.page = 1;
     this.getAssignments(this.sliderLimit);
   }
-  onDelete(assignment:Assignment) {
-    console.log(assignment);
-    this.assignmentsService
-        .deleteAssignment(assignment)
-        .subscribe((reponse) => {
-          console.log(reponse.message);
-          this.getAssignments(this.sliderLimit);
 
-        });
-     
-  }
   isAdmin() {
     return this.authService.loggedIn;
   }
+
+  onDelete(assignment:Assignment) {
+    if (this.isAdmin()) {
+      
+      console.log(assignment);
+      this.assignmentsService
+          .deleteAssignment(assignment)
+          .subscribe((reponse) => {
+            console.log(reponse.message);
+            this.getAssignments(this.sliderLimit);
+  
+          });
+    }
+     
+  }
+ 
   onEditing(assignment:Assignment){
-    this.assignmentData = assignment;
-    this.nomAssignment = this.assignmentData?.nom;
-    this.dateDeRendu = this.assignmentData?.dateDeRendu;
-    this.isEditMode= !this.isEditMode;
-    console.log(this.isEditMode);
-    console.log(assignment);
+    if (this.isAdmin()) {
+      this.assignmentData = assignment;
+      this.nomAssignment = this.assignmentData?.nom;
+      this.dateDeRendu = this.assignmentData?.dateDeRendu;
+      this.isEditMode= !this.isEditMode;
+      console.log(this.isEditMode);
+      console.log(assignment);
+    }
+    
   }
   
   onSubmit() {
@@ -144,11 +153,29 @@ export class AssignmentsComponent implements OnInit {
             this.getAssignments(this.limit);
           });
       }
-      else{
-      this.assignmentsService.addAssignment(this.assignmentData)
-      this.getAssignments(++this.limit);
-        
-    }
+      else{ 
+        console.log('nom = ' + this.nomAssignment);
+        console.log('date = ' + this.dateDeRendu);
+    
+        let newAssignement = new Assignment();
+    
+        if (this.nomAssignment && this.dateDeRendu) {
+          newAssignement.nom = this.nomAssignment;
+          newAssignement.dateDeRendu = this.dateDeRendu;
+          newAssignement.rendu = false;
+          newAssignement.id = Math.round(Math.random()*10000000);
+    
+          this.assignmentsService.addAssignment(newAssignement)
+          .subscribe(reponse => {
+            console.log(reponse.message);
+            this.getAssignments(++this.limit);
+            this.assignmentForm.resetForm();
+
+          })
+        }
+        // this.assignmentsService.addAssignment(this.assignmentData)
+          
+      }
     } else {
       console.log('Enter des donnée valide !');
     }
