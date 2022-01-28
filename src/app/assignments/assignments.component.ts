@@ -152,6 +152,8 @@ export class AssignmentsComponent implements OnInit {
             console.log(reponse.message);
             this.getAssignments(this.limit);
           });
+          this.cancelEdit()
+
       }
       else{ 
         console.log('nom = ' + this.nomAssignment);
