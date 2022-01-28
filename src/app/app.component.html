@@ -1,0 +1,12 @@
+<h1>
+  <nav>
+    <a routerLink="/home">{{titre}}</a>
+  </nav>
+</h1>
+<mat-slide-toggle (click)="loginLogout()">Login</mat-slide-toggle>
+<button mat-raised-button color="primary" (click)="genererDonneesDeTest()">Peupler BD</button>
+
+<router-outlet></router-outlet>
+<!--
+  <app-assignments></app-assignments>
+-->

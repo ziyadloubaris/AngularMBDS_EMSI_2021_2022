@@ -1,0 +1,36 @@
+.rendu {
+  color: green;
+}
+
+.nonrendu {
+  color: red;
+  background-color: yellow;
+  border: 2px dashed orange;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.ajouterBtn {
+  align-self: flex-end;
+}
+
+.container2 {
+  display: flex;
+  flex-direction: row;
+}
+.icon {
+  cursor: pointer;
+}
+.delete-icon {
+  color: red;
+}
+.edit-icon {
+  color: #3f51b5;
+}
+.disabled {
+  cursor: auto;
+  color: #e0e0e0;
+}
