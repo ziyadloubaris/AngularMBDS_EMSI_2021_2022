@@ -7,20 +7,35 @@
     </a>
   </div>
 
+  <form (submit)="onSubmit()"  ngForm class="form" #assignmentForm='ngForm'>
+
+    <mat-form-field>
+      <input matInput placeholder="Edition du nom"
+             [(ngModel)]="nomAssignment" name="assignment-name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Edition de la date"
+             [(ngModel)]="dateDeRendu" name="date">
+      <mat-datepicker-toggle matSuffix [for]="picker">
+      </mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+   
+    <ng-container *ngIf="isEditMode; else elseTemplate">
+        <button mat-button color="primary">Update</button>
+        <a mat-button color="warn" (click)="cancelEdit()">Cancel</a>
+    </ng-container>
+    <ng-template #elseTemplate>
+        <button mat-button color="primary">Add</button>
+    </ng-template>
+
+</form>
+
   <h2>Liste des assignments :</h2>
-  <p>Nb total d'assignments = {{totalDocs}}</p>
-  <p>Nb de pages = {{totalPages}}</p>
   
-  <p>Nb d'assignments par page :
+  <p>Nb d'assignments au total :
     <input type="range" min="1" max="100" step="1" (change)="changeLimit()" [(ngModel)]="sliderLimit"> {{sliderLimit}} &nbsp;
   </p>
-
-  <div class="container2">
-    <button mat-stroked-button (click)="premierePage()" [disabled]="!hasPrevPage">PREMIERE PAGE</button>
-    <button mat-stroked-button (click)="pagePrecedente()" [disabled]="!hasPrevPage">PRECEDENT</button>
-    <button mat-stroked-button (click)="pageSuivante()" [disabled]="!hasNextPage">SUIVANT</button>
-    <button mat-stroked-button (click)="dernierePage()" [disabled]="!hasNextPage">DERNIERE PAGE</button>
-  </div>
 
   <mat-list *ngFor="let assignment of assignments; index as i">
     <nav>
@@ -44,7 +59,7 @@
     <mat-divider></mat-divider>
   </mat-list>
 
-  <table mat-table [dataSource]="assignments" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -79,15 +94,15 @@
   
     <!-- Symbol Column -->
     <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef></th>
+      <th mat-header-cell *matHeaderCellDef>Delete</th>
       <td mat-cell *matCellDef="let element"> 
         <mat-icon (click)="onDelete(element)" [ngClass]="{'disabled' : !isAdmin() }" class=" delete-icon icon">delete</mat-icon> 
       </td>
     </ng-container>
     <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef></th>
+      <th mat-header-cell *matHeaderCellDef>Edit</th>
       <td mat-cell *matCellDef="let element"> 
-        <mat-icon (click)="onEditing()" [ngClass]="{'disabled' : !isAdmin() }" class="edit-icon icon">edit</mat-icon> 
+        <mat-icon (click)="onEditing(element)" [ngClass]="{'disabled' : !isAdmin() }" class="edit-icon icon">edit</mat-icon> 
       </td>
     </ng-container>
   

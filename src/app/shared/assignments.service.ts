@@ -16,10 +16,10 @@ export class AssignmentsService {
     //url = 'http://localhost:8010/api/assignments';
     url = 'https://api-mbds-2021-2022.herokuapp.com/api/assignments';
 
-  getAssignments():Observable<Assignment[]> {
+  getAssignments(limit:number):Observable<Assignment[]> {
     //return of(this.assignments);
 
-    return this.http.get<Assignment[]>(this.url);
+    return this.http.get<Assignment[]>(`${this.url}?&limit=${limit}`);
   }
 
   getAssignmentsPagine(page:number, limit:number):Observable<any> {
